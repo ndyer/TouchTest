@@ -78,9 +78,9 @@ class MtGridView
                 Pointer rec = getPointer(pid);
                 rec.seen = true;
                 rec.down = true;
-                rec.x = event.getX();
-                rec.y = event.getY();
-                rec.size = event.getSize();
+                rec.x = event.getX(pid);
+                rec.y = event.getY(pid);
+                rec.size = event.getSize(pid);
                 
                 rec.trailStart = 0;
                 rec.trailLen = 0;
