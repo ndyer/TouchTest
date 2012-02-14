@@ -63,8 +63,8 @@ class MtGridView
         int pid = 0;
         if (pact == MotionEvent.ACTION_POINTER_DOWN ||
                                         pact == MotionEvent.ACTION_POINTER_UP) {
-            final int pind = (action & MotionEvent.ACTION_POINTER_ID_MASK) >>
-                                            MotionEvent.ACTION_POINTER_ID_SHIFT;
+            final int pind = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >>
+                                            MotionEvent.ACTION_POINTER_INDEX_SHIFT;
             pid = event.getPointerId(pind);
         } else if (pact == MotionEvent.ACTION_DOWN) {
             pid = event.getPointerId(0);
