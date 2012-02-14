@@ -116,7 +116,14 @@ class MtGridView
             break;
         }
 
-        postUpdate();
+        try
+        {
+          postUpdate();
+        }
+        catch (IllegalArgumentException e)
+        {
+          // this is thrown when the ticker is killed due an orientation change
+        }
         
         return true;
     }
