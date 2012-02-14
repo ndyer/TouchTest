@@ -57,6 +57,19 @@ class MtGridView
         final int action = event.getAction();
         final int npointers = event.getPointerCount();
 
+        if (_saveData)
+        {
+          if (null == _file)
+          {
+            _file = new CsvFile();
+            if (!_file.isFileWritable()) {
+				//some kind of error
+				_saveData = false;
+				_file = null;
+            }
+          }
+        }
+
         // Get the action and pointer ID.  NOTE: ACTION_POINTER_ID_MASK
         // gets you the pointer index, NOT the ID.
         final int pact = action & MotionEvent.ACTION_MASK;
@@ -81,19 +94,52 @@ class MtGridView
                 rec.x = event.getX(pid);
                 rec.y = event.getY(pid);
                 rec.size = event.getSize(pid);
-                
+
                 rec.trailStart = 0;
                 rec.trailLen = 0;
+
+				if (_file != null)
+				{
+				    _file.addTimestamp();
+					_file.addData(pid);
+					_file.addData(1);
+					_file.addData(rec.x);
+					_file.addData(rec.y);
+					_file.addData(rec.size);
+					_file.addNewLine();
+				}
             }
             break;
         case MotionEvent.ACTION_UP:
             for (int i = 0; i < MAX_POINTER_ID; ++i)
+            {
+                if (getPointer(i).down)
+                {
+	                if (_file != null)
+	                {
+			            _file.addTimestamp();
+						_file.addData(i);
+						_file.addData(0);
+						_file.addNewLine();
+	                }
+                }
+
                 getPointer(i).down = false;
+            }
             break;
         case MotionEvent.ACTION_POINTER_UP:
             {
                 Pointer rec = getPointer(pid);
                 rec.down = false;
+
+                if (_file != null)
+                {
+					_file.addTimestamp();
+					_file.addData(pid);
+					_file.addData(0);
+					_file.addNewLine();
+                }
+
                 break;
             }
         case MotionEvent.ACTION_MOVE:
@@ -112,6 +158,17 @@ class MtGridView
                     addPoint(rec, hx, hy);
                 }
                 addPoint(rec, rec.x, rec.y);
+
+                if (_file != null)
+                {
+					_file.addTimestamp();
+					_file.addData(p);
+					_file.addData(1);
+					_file.addData(rec.x);
+					_file.addData(rec.y);
+					_file.addData(rec.size);
+					_file.addNewLine();
+                }
             }
             break;
         }
@@ -128,5 +185,11 @@ class MtGridView
         return true;
     }
 
+    private boolean _saveData = false;
+    private CsvFile _file;
+
+    public void setSaveData(boolean saveData) {
+		this._saveData = saveData;
+	}
 }
 
