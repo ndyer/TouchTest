@@ -21,7 +21,6 @@
 		
 	</application>
 
-    <uses-sdk android:minSdkVersion="4"/>
 	<uses-configuration android:reqTouchScreen="finger" />
 	
 <supports-screens android:smallScreens="true" android:largeScreens="true" android:resizeable="true" android:normalScreens="true" android:anyDensity="true"></supports-screens>
