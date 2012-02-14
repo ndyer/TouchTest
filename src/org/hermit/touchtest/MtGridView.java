@@ -56,6 +56,8 @@ class MtGridView
     public boolean onTouchEvent(MotionEvent event) {
         final int action = event.getAction();
         final int npointers = event.getPointerCount();
+        final int pact = event.getActionMasked();
+        final int pid = event.getActionIndex();
 
         if (_saveData)
         {
@@ -68,19 +70,6 @@ class MtGridView
 				_file = null;
             }
           }
-        }
-
-        // Get the action and pointer ID.  NOTE: ACTION_POINTER_ID_MASK
-        // gets you the pointer index, NOT the ID.
-        final int pact = action & MotionEvent.ACTION_MASK;
-        int pid = 0;
-        if (pact == MotionEvent.ACTION_POINTER_DOWN ||
-                                        pact == MotionEvent.ACTION_POINTER_UP) {
-            final int pind = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >>
-                                            MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-            pid = event.getPointerId(pind);
-        } else if (pact == MotionEvent.ACTION_DOWN) {
-            pid = event.getPointerId(0);
         }
 
         // Update the up/down state of this pointer.
